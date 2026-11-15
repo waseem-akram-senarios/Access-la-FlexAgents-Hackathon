@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: access-la-flexagents-api
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONPATH
+        value: .
+      - key: SPECTAC_TZ
+        value: America/Los_Angeles
+      - key: SPECTAC_CHAOS
+        value: "0"
