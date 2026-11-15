@@ -1,30 +1,24 @@
-# FlexAgents Connections cheat sheet
+# FlexAgents Connections — wire every API
 
-Permanent API base (hardcode everywhere for API sub-agents):
+**Base URL (hardcode):** `https://access-la-flexagents-api.vercel.app`  
+**Docs:** https://access-la-flexagents-api.vercel.app/docs  
+**Full map:** see `API_TOOL_MAP.md`
 
-```
-https://access-la-flexagents-api.vercel.app
-```
+| Sub-agent | Connection type | Endpoints it must be able to call |
+|-----------|-----------------|-----------------------------------|
+| `answer_policy` | Knowledge base | *(no HTTP — KB only)* |
+| `find_department` | Directory HTTP | `GET /departments`, `GET /departments?need=`, `GET /departments/{id}` |
+| `log_case` | Cases + Outbox HTTP | `POST /cases`, `GET /cases/{id}`, `GET /cases?phone=`, `POST /messages`, `GET /messages?to=` |
+| `book_callback` | Callbacks + Outbox HTTP | `GET /slots`, `POST /callbacks`, `GET /callbacks/{id}`, `DELETE /callbacks/{id}`, `POST /messages`, `GET /messages?to=` |
 
-| Sub-agent | Mode | Connection |
-|-----------|------|------------|
-| `answer_policy` | look-up | Knowledge base (organizers’ source pack) |
-| `find_department` | look-up | Directory API → base URL above |
-| `log_case` | changes data | Cases + Message Outbox → base URL above |
-| `book_callback` | changes data | Callbacks + Message Outbox → base URL above |
+## Default headers
+- `X-Spectac-Chaos: off`
+- Writes: also `Idempotency-Key: <unique>` on `POST /cases` and `POST /callbacks`
+- `Content-Type: application/json` on POST bodies
 
-OpenAPI: https://access-la-flexagents-api.vercel.app/docs
-
-## Suggested HTTP tools to register
-- `GET {base}/departments?need=`
-- `GET {base}/departments/{id}`
-- `POST {base}/cases` (+ header `Idempotency-Key`)
-- `GET {base}/cases/{id}`
-- `GET {base}/cases?phone=`
-- `GET {base}/slots?dept=&date=`
-- `POST {base}/callbacks` (+ `Idempotency-Key`)
-- `DELETE {base}/callbacks/{id}`
-- `POST {base}/messages`
-- `GET {base}/messages?to=`
-
-Optional header on all: `X-Spectac-Chaos: off`
+## Checklist before demo
+- [ ] Each API sub-agent Connection points at `https://access-la-flexagents-api.vercel.app`
+- [ ] All rows in the table above are registered as tools for that sub-agent
+- [ ] Prompt files `02_`, `03_`, `04_` pasted into those sub-agents
+- [ ] Main prompt `00_` routes to the four sub-agents
+- [ ] Smoke: `/health` returns ok
