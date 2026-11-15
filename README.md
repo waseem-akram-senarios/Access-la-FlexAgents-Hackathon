@@ -15,6 +15,16 @@ PYTHONPATH=. python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8787
 - OpenAPI: http://127.0.0.1:8787/docs  
 - Health: http://127.0.0.1:8787/health
 
+## Deploy on Vercel
+
+```bash
+npx vercel@latest deploy
+```
+
+Or connect the GitHub repo in the Vercel dashboard. FastAPI entrypoint: `app.main:app`.
+
+**Caveat:** serverless cold starts can reset in-memory cases/slots. Fine for demos; claim a permanent project after temporary deploy.
+
 ## Deploy free (no credit card) → PythonAnywhere
 
 See **[PYTHONANYWHERE.md](PYTHONANYWHERE.md)**.
