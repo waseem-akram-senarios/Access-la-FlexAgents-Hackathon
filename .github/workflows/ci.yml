@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  fast-deterministic:
+    name: Fast deterministic tests (L1–L2 + API)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+      - name: API + unit/integration tests
+        run: PYTHONPATH=. pytest -q tests/test_horizontal.py tests/test_vertical.py tests/test_cases.py tests/test_callbacks.py tests/test_departments.py tests/test_messages.py
+
+  agent-eval:
+    name: Agent evaluation (L1–L7 sandbox)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+      - name: Eval framework tests
+        run: PYTHONPATH=. pytest -q tests/test_eval_framework.py
+      - name: Full eval suite + security gates
+        run: |
+          PYTHONPATH=. python3 -m eval --out eval/reports --min-score 90
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: eval/reports/

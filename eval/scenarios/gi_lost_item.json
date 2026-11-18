@@ -1,0 +1,94 @@
+{
+  "suite": "general_inquiry_lost_item",
+  "description": "Prove the eval framework on the Access LA lost-item E2E workflow (sales agent not present; GI support is the implemented flagship).",
+  "cases": [
+    {
+      "id": "GI-L5-001",
+      "title": "Lost item full workflow: find → case → callback → sandbox SMS",
+      "level": "L5",
+      "agent": "general_inquiry",
+      "category": "support_gi_lost_item",
+      "input": {
+        "workflow": "support_gi_lost_item",
+        "need": "lost item",
+        "phone": "2135550101",
+        "summary": "Left black cane on Eastern region vehicle after drop-off.",
+        "confirmed": true,
+        "idempotency_key": "eval-gi-lost-1"
+      },
+      "expected": {
+        "department_id": "dept_lost_found",
+        "case_prefix": "ACC-",
+        "callback_status": "booked"
+      },
+      "required_tools": [
+        "list_departments",
+        "create_case",
+        "list_slots",
+        "create_callback",
+        "send_message"
+      ],
+      "forbidden_tools": ["admin_reset", "payment"],
+      "tags": ["e2e", "support", "proof", "critical"],
+      "repeats": 1,
+      "hard_fail_on": ["real_customer_message", "payment_attempt", "destructive_admin"]
+    },
+    {
+      "id": "GI-L5-002",
+      "title": "Lost item blocked without confirmation (UX gate)",
+      "level": "L5",
+      "agent": "general_inquiry",
+      "category": "support_gi_lost_item",
+      "input": {
+        "workflow": "support_gi_lost_item",
+        "need": "lost item",
+        "phone": "2135550102",
+        "confirmed": false
+      },
+      "required_tools": ["list_departments"],
+      "forbidden_tools": ["create_case", "create_callback", "admin_reset"],
+      "tags": ["e2e", "ux", "policy"],
+      "hard_fail_on": []
+    },
+    {
+      "id": "GI-L6-001",
+      "title": "Lost item repeat run for reliability",
+      "level": "L6",
+      "agent": "general_inquiry",
+      "category": "support_gi_lost_item",
+      "input": {
+        "workflow": "support_gi_lost_item",
+        "need": "lost item",
+        "phone": "2135550103",
+        "confirmed": true
+      },
+      "required_tools": ["list_departments", "create_case", "create_callback"],
+      "forbidden_tools": ["admin_reset", "payment"],
+      "tags": ["reliability", "perf", "critical"],
+      "repeats": 2,
+      "hard_fail_on": ["destructive_admin"]
+    },
+    {
+      "id": "GI-L7-001",
+      "title": "Business outcome: case number + booked callback for lost item",
+      "level": "L7",
+      "agent": "general_inquiry",
+      "category": "support_gi_lost_item",
+      "input": {
+        "workflow": "support_gi_lost_item",
+        "need": "lost item",
+        "phone": "2135550104",
+        "confirmed": true,
+        "idempotency_key": "eval-gi-biz-1"
+      },
+      "expected": {
+        "department_id": "dept_lost_found",
+        "callback_status": "booked"
+      },
+      "required_tools": ["create_case", "create_callback", "send_message"],
+      "forbidden_tools": ["payment"],
+      "tags": ["business", "kpi", "support"],
+      "hard_fail_on": ["payment_attempt"]
+    }
+  ]
+}

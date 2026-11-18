@@ -1,0 +1,135 @@
+{
+  "note": "Staging agents are separate products. Do not map them to Track B sub-agents (answer_policy / find_department / log_case / book_callback). Local pytest only exercises the Track B API, not these prompts.",
+  "agents": [
+    {
+      "step": 1,
+      "name": "Jenny",
+      "role": "Access LA voice orchestrator",
+      "organization_id": "6aa1562861347fe1a3087d63",
+      "agent_id": "6af703a01d07b8f78656fe4f",
+      "prompt_url": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6af703a01d07b8f78656fe4f/prompt",
+      "speaks_to_caller": true,
+      "sub_agents": [
+        "search_knowledge",
+        "find_department",
+        "log_case",
+        "book_callback",
+        "get_current_datetime"
+      ],
+      "tools": ["end_call"],
+      "does": [
+        "Only voice on the Access LA call",
+        "English/Spanish from the latest caller message",
+        "Hands off in English with language code en or es",
+        "Holding line only until sub-agent STATUS result",
+        "Read-back and a clean yes before writes",
+        "Two jobs one at a time"
+      ],
+      "does_not": [
+        "Book, change, or cancel a ride",
+        "Invent fares, phones, case numbers, or callback times",
+        "Let sub-agents speak to the caller"
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Amelia",
+      "role": "Barwood and Regency taxi dispatcher",
+      "organization_id": "6af96a0fbdbf32a95ff4651b",
+      "agent_id": "6af97679bdbf32a95ff46702",
+      "prompt_url": "https://dashboard-staging.flexagents.ai/organization/6af96a0fbdbf32a95ff4651b/agent/6af97679bdbf32a95ff46702/prompt",
+      "speaks_to_caller": true,
+      "sub_agents": [],
+      "tools": [
+        "rider_lookup",
+        "address_lookup",
+        "fare_calculation",
+        "booking",
+        "upcoming_trips",
+        "cancel_trip",
+        "update_pickup_time",
+        "activate_will_call",
+        "send_sms",
+        "transfer"
+      ],
+      "does": [
+        "Greeting already spoken; never re-introduce",
+        "Rider lookup before trip questions",
+        "Book, quote fare, ETA, cancel, change pickup time, will-call, SMS",
+        "One question per turn, two short sentences max",
+        "Return trip after outbound confirmation, earliest time = pickup + travel + 10 min"
+      ],
+      "does_not": [
+        "Invent times, fares, addresses, or confirmation numbers",
+        "Re-ask details already collected",
+        "Start a new booking when a trip is already on file"
+      ]
+    },
+    {
+      "step": 3,
+      "name": "Neo",
+      "role": "Warm call-center voice (no transfer, no KB offer)",
+      "organization_id": "6af72a3c4431b640e6041707",
+      "agent_id": "6af72aab4431b640e6041709",
+      "prompt_url": "https://dashboard-staging.flexagents.ai/organization/6af72a3c4431b640e6041707/agent/6af72aab4431b640e6041709/prompt",
+      "speaks_to_caller": true,
+      "sub_agents": [],
+      "tools": [],
+      "does": [
+        "Natural spoken replies, no markdown, bullets, or emojis",
+        "Stay concise and easy to read aloud"
+      ],
+      "does_not": [
+        "Offer or attempt a call transfer",
+        "Offer a knowledge-base search when the answer is missing",
+        "Suggest extra searches or actions that are not required"
+      ]
+    },
+    {
+      "step": 4,
+      "name": "Ana",
+      "role": "Patient transportation booking assistant",
+      "organization_id": "6af9699dbdbf32a95ff46515",
+      "agent_id": "6af96f45bdbf32a95ff46533",
+      "prompt_url": "https://dashboard-staging.flexagents.ai/organization/6af9699dbdbf32a95ff46515/agent/6af96f45bdbf32a95ff46533/prompt",
+      "prompt_version": "v13",
+      "speaks_to_caller": true,
+      "sub_agents": [],
+      "tools": [
+        "account_lookup_by_phone",
+        "eligibility_check",
+        "existing_rides",
+        "past_rides",
+        "trip_counts",
+        "address_match",
+        "dispatch_pickup_time",
+        "service_hours_check",
+        "fare_quote",
+        "book_ride",
+        "cancel_ride"
+      ],
+      "does": [
+        "One short question; never repeat the greeting",
+        "Look up the account once by phone; ask once if missing; never invent a number",
+        "If several people match, ask for a name; a one-letter difference still matches",
+        "If ProgramID > 0, ask for rider ID even when the profile has one, then check eligibility with that ID and ProgramID",
+        "If ProgramID is -1, skip rider ID; never send ProgramID 17 unless the profile says 17",
+        "Booked-trip questions: look up existing rides as soon as client id is known; do not ask which trip",
+        "New ride: pickup, then drop-off, read each match and wait for yes",
+        "Then pickup time or arrive-by; never use now as the pickup",
+        "Arrive-by goes to dispatch for a pickup time, then a service check; a refusal stops booking",
+        "Then passengers, mobility, fare; payment only if fare > 0; notes once; return once; then book",
+        "The booking step asks for the yes; Ana does not read the trip back or ask for yes herself",
+        "Cancel passes the confirmation number when already known; the cancel step looks up active rides and asks for yes"
+      ],
+      "does_not": [
+        "Cancel on her own or repeat a booking/cancel after it succeeded",
+        "Look up the same phone twice",
+        "Ask for a home address",
+        "Modify a booked trip (removed in v13)",
+        "Use will-call (not in this prompt)",
+        "Start the next tool while the current step is still running"
+      ]
+    }
+  ]
+}

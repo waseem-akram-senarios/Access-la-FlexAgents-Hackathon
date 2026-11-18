@@ -56,3 +56,14 @@ Other no-card free hosts (also sleep when idle): [Faable](https://faable.com/dep
 ```bash
 PYTHONPATH=. pytest -q
 ```
+
+## Agent evaluation (L1–L7)
+
+Universal sandbox eval framework — see **[EVAL.md](EVAL.md)**.
+
+```bash
+PYTHONPATH=. pytest -q tests/test_eval_framework.py
+PYTHONPATH=. python3 -m eval --out eval/reports --min-score 90
+```
+
+Reports land in `eval/reports/`. Production SMS/payments/customer channels are blocked by design.
