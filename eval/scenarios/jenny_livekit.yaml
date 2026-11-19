@@ -1,0 +1,29 @@
+id: SCNG_access_la_jenny
+name: Access LA Jenny staging
+scenarios:
+  - id: SCN_jenny_lost_bag_open_now
+    label: Lost bag on the bus, is Lost and Found open
+    instructions: |
+      PERSONA: Jamie, an Access LA rider. You speak English. You answer one
+      question at a time and do not volunteer extra details.
+      OPENING LINE: "Who do I call if I left my bag on the bus? Is that department open right now?"
+      FACTS (reveal each only when asked):
+      - You only want the right department, its phone number, and whether it is open now.
+      - You do not want a case filed and you do not want a callback yet.
+      DO, IN ORDER:
+      1. Ask who to call about a bag left on the bus and whether that department is open right now.
+      2. If the agent asks a follow-up, repeat that you left a bag on the bus.
+      3. Stop once the agent gives a department, a phone number, and whether it is open or closed.
+    agent_expectations: >
+      Routes the caller to Lost and Found, speaks the phone number returned by
+      the directory tool, and says whether that department is open or closed
+      from the tool result. Inventing a phone number, skipping the open/closed
+      status, or filing a case is a fail.
+    tags:
+      feature: find_department
+      line: flexagents-inbound-staging
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f
+      livekit_agent_name: flexagent.staging
+      dispatch_rule: flexagents-inbound-staging

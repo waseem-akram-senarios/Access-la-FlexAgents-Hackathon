@@ -1,0 +1,60 @@
+{
+  "agent": "Access LA Jenny",
+  "timezone": "America/Los_Angeles",
+  "caller_phone": "213-555-0199",
+  "cases": [
+    {
+      "id": "JENNY-1",
+      "title": "KB — answer_policy",
+      "question": "What's the current one-way Access fare?",
+      "tools": ["search_knowledge"],
+      "pass": "Answer plus the document name. No invented fare."
+    },
+    {
+      "id": "JENNY-2",
+      "title": "Directory — find_department",
+      "question": "Who do I call if I left my bag on the bus? Is that department open right now?",
+      "tools": ["find_departments", "get_department"],
+      "pass": "Lost & Found plus phone plus open/closed from the API."
+    },
+    {
+      "id": "JENNY-3",
+      "title": "Cases + SMS — log_case",
+      "question": "I left my backpack on the 7 bus yesterday at 2pm. File a lost item report. Call me at 213-555-0199.",
+      "confirm": "Yes",
+      "tools": ["create_case", "send_text"],
+      "pass": "Case AC-… plus a text confirmation."
+    },
+    {
+      "id": "JENNY-4",
+      "title": "Cases lookup — log_case",
+      "question": "What cases do you have for 213-555-0199?",
+      "tools": ["find_cases_by_phone"],
+      "pass": "Lists the case from JENNY-3."
+    },
+    {
+      "id": "JENNY-5",
+      "title": "Callback + SMS — book_callback",
+      "question": "That lost and found department is closed. Book me a callback tomorrow morning at 213-555-0199.",
+      "confirm": "Yes on the time",
+      "tools": ["list_callback_slots", "book_callback_slot", "send_text"],
+      "pass": "A morning slot is offered, then CB-… plus a text."
+    },
+    {
+      "id": "JENNY-6",
+      "title": "Callback lookup / cancel — book_callback",
+      "question": "Do I have a callback for 213-555-0199? Please cancel it.",
+      "confirm": "Yes",
+      "tools": ["find_callbacks_by_phone", "cancel_callback"],
+      "pass": "Finds the callback, then cancels it."
+    },
+    {
+      "id": "JENNY-7",
+      "title": "Two jobs",
+      "question": "I left my bag on the 7 bus, and the driver was rude. Number 213-555-0199.",
+      "confirm": "Yes twice, once per issue",
+      "tools": ["create_case", "send_text", "create_case", "send_text"],
+      "pass": "Two separate cases, not mixed."
+    }
+  ]
+}
