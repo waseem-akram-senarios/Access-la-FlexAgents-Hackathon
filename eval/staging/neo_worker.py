@@ -105,7 +105,12 @@ class Neo(Agent):
 @server.rtc_session(agent_name="")
 async def entrypoint(ctx: JobContext) -> None:
     await ctx.connect()
-    session = AgentSession(llm="openai/gpt-4.1-mini", max_tool_steps=6)
+    session = AgentSession(
+        stt="assemblyai/universal-streaming",
+        llm="openai/gpt-4.1-mini",
+        tts="cartesia/sonic",
+        max_tool_steps=6,
+    )
     await session.start(agent=Neo(), room=ctx.room)
 
 
