@@ -1,0 +1,21 @@
+id: SCNG_jenny_3
+name: Jenny 3 log case
+scenarios:
+  - id: SCN_jenny_3_lost_backpack
+    label: File a lost backpack report and text the case number
+    instructions: |
+      PERSONA: Jamie. You speak English. Answer one question at a time.
+      OPENING LINE: "I left my backpack on the 7 bus yesterday at 2pm. File a lost item report. Call me at 213-555-0199."
+      FACTS:
+      - Phone 213-555-0199.
+      - Yesterday at 2pm, backpack on the 7 bus.
+      DO, IN ORDER:
+      1. Ask them to file the lost item report.
+      2. If they read the details back, say "Yes".
+      3. Do not end the call until they give a case number that starts with AC- and say a text was sent.
+    agent_expectations: >
+      After the caller says yes, creates one lost-item case and sends a text.
+      The reply includes a case number starting with AC- and confirms the text.
+      A reply with no AC- number, or no text, is a fail.
+    tags:
+      feature: log_case

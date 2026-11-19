@@ -1,0 +1,19 @@
+id: SCNG_ana_1
+name: Ana no account
+scenarios:
+  - id: SCN_ana_1_no_profile
+    label: No profile, ask DART or ACCESS once
+    instructions: |
+      PERSONA: Jamie. Speak English. Answer one short question at a time.
+      OPENING LINE: "My number is 213-555-0140. I need a ride."
+      DO, IN ORDER:
+      1. If they say no profile was found, answer "ACCESS" when they ask DART or ACCESS.
+      2. Stop after that answer. Do not give a rider ID yet.
+    agent_expectations: >
+      Looks up the phone once, says no profile was found, and asks whether they
+      use DART or ACCESS. Looking the number up again, or asking for a place
+      before that answer, is a fail.
+    userdata:
+      fixture: no_account
+      organization_id: 6af9699dbdbf32a95ff46515
+      agent_id: 6af96f45bdbf32a95ff46533

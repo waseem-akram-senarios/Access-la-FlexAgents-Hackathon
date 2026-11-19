@@ -1,0 +1,18 @@
+id: SCNG_barwood_9
+name: Barwood early return
+scenarios:
+  - id: SCN_barwood_9_return_now
+    label: Return now is too early
+    instructions: |
+      PERSONA: Jamie. Speak English. You already want the outbound and a return.
+      OPENING LINE: "Book me tomorrow at 9 AM from Boyds Maryland to BWI, cash, just me, no wheelchair, and I need the return now."
+      DO, IN ORDER:
+      1. Answer booking questions one at a time.
+      2. When they ask about a return, say "now".
+      3. Stop when they give an earliest return time.
+    agent_expectations: >
+      Does not book the return for now. Tells the caller the earliest return
+      pickup is the outbound time plus travel minutes plus 10 minutes.
+      Booking the return immediately is a fail.
+    userdata:
+      fixture: named

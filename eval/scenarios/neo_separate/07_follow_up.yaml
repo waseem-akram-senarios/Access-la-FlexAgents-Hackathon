@@ -1,0 +1,18 @@
+id: SCNG_neo_7
+name: Neo follow-up
+scenarios:
+  - id: SCN_neo_7_after
+    label: The one after that keeps the same route and stop
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "When is the next Route 1 bus at Knight Street Transit Center? And what about the one after that?"
+      DO, IN ORDER:
+      1. Ask both in the opening.
+      2. Do not repeat the route or stop.
+      3. Stop when they give both scheduled times.
+    agent_expectations: >
+      Keeps Route 1 and Knight Street Transit Center without asking again.
+      Says the next bus is scheduled at 2:35 PM and the one after at 3:05 PM.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

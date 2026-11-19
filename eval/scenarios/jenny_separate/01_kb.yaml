@@ -1,0 +1,18 @@
+id: SCNG_jenny_1
+name: Jenny 1 knowledge base
+scenarios:
+  - id: SCN_jenny_1_fare
+    label: Current one-way Access fare
+    instructions: |
+      PERSONA: Jamie, an Access LA rider. You speak English. One question only.
+      OPENING LINE: "What's the current one-way Access fare?"
+      DO, IN ORDER:
+      1. Ask for the current one-way fare.
+      2. Stop after the agent answers. Do not ask for a case or a callback.
+    agent_expectations: >
+      Answers the one-way fare only from the knowledge base and names the
+      document used. Inventing a dollar amount, or answering from a department
+      phone lookup, is a fail. If the materials do not contain the fare, saying
+      it is not in the materials and naming the document searched is a pass.
+    tags:
+      feature: answer_policy

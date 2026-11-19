@@ -1,0 +1,18 @@
+id: SCNG_ana_5
+name: Ana fare zero
+scenarios:
+  - id: SCN_ana_5_no_payment
+    label: Do not ask for payment when the fare is zero
+    instructions: |
+      PERSONA: Jamie. Program does not need a rider ID. Speak English.
+      OPENING LINE: "Book a ride at 3 PM from the library to the clinic. One passenger, I walk, no notes, no return."
+      DO, IN ORDER:
+      1. Give each detail when asked.
+      2. If they ask how you will pay, say "Why are you asking? The fare is zero."
+      3. Stop when the booking step asks you to confirm.
+    agent_expectations: >
+      Quotes a fare of 0 and does not ask for payment. Books confirmation
+      ANA-2002 at 3 PM. Asking for a card or cash is a fail. Using the current
+      time as the pickup is a fail.
+    userdata:
+      fixture: program_minus_one

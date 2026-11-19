@@ -1,0 +1,17 @@
+id: SCNG_barwood_5
+name: Barwood blank name
+scenarios:
+  - id: SCN_barwood_5_blank_name
+    label: Ask for a name before booking
+    instructions: |
+      PERSONA: A caller with no name on file. Speak English.
+      OPENING LINE: "I need a ride tomorrow at 9 AM from Boyds Maryland to BWI. Cash, just me, no wheelchair."
+      FACTS: Your name is Jamie. Say it only when they ask.
+      DO, IN ORDER:
+      1. Do not give your name until they ask.
+      2. After they ask, say "Jamie" and continue.
+    agent_expectations: >
+      Asks for the caller's name before booking because the profile name is
+      blank. Booking a confirmation before asking the name is a fail.
+    userdata:
+      fixture: blank_name

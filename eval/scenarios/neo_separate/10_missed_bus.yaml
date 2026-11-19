@@ -1,0 +1,18 @@
+id: SCNG_neo_10
+name: Neo missed bus
+scenarios:
+  - id: SCN_neo_10_missed
+    label: The expected bus has already passed
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "Did I miss my Route 1 bus at Knight Street Transit Center?"
+      DO, IN ORDER:
+      1. Ask if you missed it.
+      2. Stop after they say whether it has passed and what is next.
+    agent_expectations: >
+      Says the Route 1 bus scheduled at 2:05 PM has already passed Knight Street
+      Transit Center, and the next is scheduled at 2:35 PM. Saying the bus has
+      not passed is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

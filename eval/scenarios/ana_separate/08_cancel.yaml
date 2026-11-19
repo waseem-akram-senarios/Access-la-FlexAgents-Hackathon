@@ -1,0 +1,17 @@
+id: SCNG_ana_8
+name: Ana cancel
+scenarios:
+  - id: SCN_ana_8_cancel
+    label: Cancel the confirmation the caller named
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "Cancel confirmation ANA-1001."
+      DO, IN ORDER:
+      1. If the cancel step asks you to confirm, say yes.
+      2. Stop when they say ANA-1001 was cancelled.
+    agent_expectations: >
+      Passes ANA-1001 to cancel and says that ride was cancelled. Does not ask
+      which ride, and does not ask whether to cancel one or all. Looking up
+      rides before the cancel is a fail.
+    userdata:
+      fixture: has_ride

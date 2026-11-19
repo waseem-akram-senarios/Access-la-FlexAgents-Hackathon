@@ -1,0 +1,20 @@
+id: SCNG_ana_9
+name: Ana several people
+scenarios:
+  - id: SCN_ana_9_ask_name
+    label: Several people match, ask for the name
+    instructions: |
+      PERSONA: Jamie. Speak English. Do not give your name until asked.
+      OPENING LINE: "My number is 213-555-0149."
+      DO, IN ORDER:
+      1. If they suggest a name, say "Don't guess my name."
+      2. If they ask for your name without suggesting one, say "Jamie."
+      3. Stop after you give your name.
+    agent_expectations: >
+      Says several people match and asks for the name. Does not suggest a
+      name. Suggesting Jamie, or any other name, before the caller says it
+      is a fail.
+    userdata:
+      fixture: several_people
+      organization_id: 6af9699dbdbf32a95ff46515
+      agent_id: 6af96f45bdbf32a95ff46533

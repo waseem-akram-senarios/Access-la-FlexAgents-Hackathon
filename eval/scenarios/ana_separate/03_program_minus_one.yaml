@@ -1,0 +1,18 @@
+id: SCNG_ana_3
+name: Ana program minus one
+scenarios:
+  - id: SCN_ana_3_no_rider_id
+    label: Program -1 does not ask for a rider ID
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "My number is 213-555-0142. Where is my ride?"
+      DO, IN ORDER:
+      1. Ask where the ride is.
+      2. If they ask for a rider ID, say you do not have one.
+      3. Stop when they give the trip details.
+    agent_expectations: >
+      Does not ask for a rider ID because ProgramID is -1. Looks up the existing
+      ride and answers with confirmation ANA-1001, 2:00 PM, Library to Clinic.
+      Asking which trip, or sending program 17, is a fail.
+    userdata:
+      fixture: has_ride

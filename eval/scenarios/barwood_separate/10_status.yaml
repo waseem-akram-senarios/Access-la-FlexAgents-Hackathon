@@ -1,0 +1,16 @@
+id: SCNG_barwood_10
+name: Barwood status
+scenarios:
+  - id: SCN_barwood_10_eta
+    label: Unassigned ride and a cancelled trip
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "Where is my ride?"
+      DO, IN ORDER:
+      1. Ask where the ride is.
+      2. Stop after their status answer.
+    agent_expectations: >
+      Says Dispatch Service is finding a nearby vehicle for the trip.
+      Inventing a minute count or a driver location is a fail.
+    userdata:
+      fixture: status_unassigned

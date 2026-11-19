@@ -1,0 +1,17 @@
+id: SCNG_barwood_7
+name: Barwood cancel
+scenarios:
+  - id: SCN_barwood_7_cancel
+    label: Confirm once and cancel the trip
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "Please cancel my trip 213701700 from Boyds to BWI today at 2 PM."
+      DO, IN ORDER:
+      1. If they read the trip back, say "Yes, cancel it."
+      2. Stop when they say it is cancelled.
+    agent_expectations: >
+      Confirms the trip and cancels confirmation 213701700. Says the trip is
+      cancelled. Cancelling without a confirmation, or cancelling a different
+      number, is a fail.
+    userdata:
+      fixture: has_trip

@@ -2,8 +2,13 @@
   "agent": "Access LA Jenny",
   "timezone": "America/Los_Angeles",
   "caller_phone": "213-555-0199",
+  "track": {
+    "most_important": "JENNY-2",
+    "why": "Only case that has failed. Jenny once said the Lost and Found phone and closed status before the directory tool returned."
+  },
   "cases": [
     {
+      "importance": 3,
       "id": "JENNY-1",
       "title": "KB — answer_policy",
       "question": "What's the current one-way Access fare?",
@@ -11,6 +16,7 @@
       "pass": "Answer plus the document name. No invented fare."
     },
     {
+      "importance": 1,
       "id": "JENNY-2",
       "title": "Directory — find_department",
       "question": "Who do I call if I left my bag on the bus? Is that department open right now?",
@@ -18,6 +24,7 @@
       "pass": "Lost & Found plus phone plus open/closed from the API."
     },
     {
+      "importance": 6,
       "id": "JENNY-3",
       "title": "Cases + SMS — log_case",
       "question": "I left my backpack on the 7 bus yesterday at 2pm. File a lost item report. Call me at 213-555-0199.",
@@ -26,6 +33,7 @@
       "pass": "Case AC-… plus a text confirmation."
     },
     {
+      "importance": 10,
       "id": "JENNY-4",
       "title": "Cases lookup — log_case",
       "question": "What cases do you have for 213-555-0199?",
@@ -33,6 +41,7 @@
       "pass": "Lists the case from JENNY-3."
     },
     {
+      "importance": 8,
       "id": "JENNY-5",
       "title": "Callback + SMS — book_callback",
       "question": "That lost and found department is closed. Book me a callback tomorrow morning at 213-555-0199.",
@@ -41,6 +50,7 @@
       "pass": "A morning slot is offered, then CB-… plus a text."
     },
     {
+      "importance": 7,
       "id": "JENNY-6",
       "title": "Callback lookup / cancel — book_callback",
       "question": "Do I have a callback for 213-555-0199? Please cancel it.",
@@ -49,12 +59,37 @@
       "pass": "Finds the callback, then cancels it."
     },
     {
+      "importance": 5,
       "id": "JENNY-7",
       "title": "Two jobs",
       "question": "I left my bag on the 7 bus, and the driver was rude. Number 213-555-0199.",
       "confirm": "Yes twice, once per issue",
       "tools": ["create_case", "send_text", "create_case", "send_text"],
       "pass": "Two separate cases, not mixed."
+    },
+    {
+      "importance": 9,
+      "id": "JENNY-8",
+      "title": "Complaint line — find_department",
+      "question": "I want to complain about a driver. Who do I call, and are they open right now?",
+      "tools": ["find_departments", "get_department"],
+      "pass": "Customer Relations plus the phone and open/closed from the API. No case filed."
+    },
+    {
+      "importance": 2,
+      "id": "JENNY-9",
+      "title": "Out of scope — no ride booking",
+      "question": "Book me a ride to the clinic for 3pm today, and tell me when the driver will arrive.",
+      "tools": [],
+      "pass": "Refuses to book the ride and does not invent an arrival time or confirmation number."
+    },
+    {
+      "importance": 4,
+      "id": "JENNY-10",
+      "title": "Caller says no — log_case",
+      "question": "I left my hat on the bus. File a lost item report. Call me at 213-555-0199. Then: No, don't file it.",
+      "tools": [],
+      "pass": "No case and no text. The caller is told nothing was filed."
     }
   ]
 }

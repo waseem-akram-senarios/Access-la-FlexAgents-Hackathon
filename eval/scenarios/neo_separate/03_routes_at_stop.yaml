@@ -1,0 +1,17 @@
+id: SCNG_neo_3
+name: Neo buses at stop
+scenarios:
+  - id: SCN_neo_3_which
+    label: Which buses stop at Knight Street
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "What buses stop at Knight Street Transit Center?"
+      DO, IN ORDER:
+      1. Ask which buses stop there.
+      2. Stop when they name the routes.
+    agent_expectations: >
+      Names Route 1, Route 2, and Route 4 at Knight Street Transit Center.
+      Offering a transfer is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

@@ -1,0 +1,18 @@
+id: SCNG_neo_8
+name: Neo realtime late
+scenarios:
+  - id: SCN_neo_8_late
+    label: Realtime says the bus is predicted late
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "Is my Route 1 bus at Knight Street Transit Center running late?"
+      DO, IN ORDER:
+      1. Ask if it is late.
+      2. Stop after the predicted time.
+    agent_expectations: >
+      Uses the realtime result. Says the bus was scheduled at 2:35 PM and is
+      predicted at 2:42 PM, 7 minutes late. Giving only the scheduled time, or
+      a different delay, is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

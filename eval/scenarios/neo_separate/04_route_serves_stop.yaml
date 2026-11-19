@@ -1,0 +1,17 @@
+id: SCNG_neo_4
+name: Neo route serves stop
+scenarios:
+  - id: SCN_neo_4_serves
+    label: Does Route 1 stop at Knight Street
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "Does Route 1 stop at Knight Street Transit Center?"
+      DO, IN ORDER:
+      1. Ask that question.
+      2. Stop after the yes or no.
+    agent_expectations: >
+      Says yes, Route 1 does stop at Knight Street Transit Center.
+      Saying it does not stop there is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

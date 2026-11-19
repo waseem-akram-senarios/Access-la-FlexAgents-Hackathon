@@ -1,0 +1,17 @@
+id: SCNG_neo_5
+name: Neo Saturday
+scenarios:
+  - id: SCN_neo_5_saturday
+    label: Route 1 does not run on Saturday
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "Does Route 1 run on Saturday?"
+      DO, IN ORDER:
+      1. Ask about Saturday.
+      2. Stop after the answer.
+    agent_expectations: >
+      Says Route 1 does not run on Saturday. Saying it does run, or inventing
+      a Saturday time, is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

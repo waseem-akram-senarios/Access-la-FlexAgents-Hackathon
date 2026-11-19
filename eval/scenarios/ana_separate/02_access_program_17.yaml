@@ -1,0 +1,19 @@
+id: SCNG_ana_2
+name: Ana ACCESS eligibility
+scenarios:
+  - id: SCN_ana_2_access
+    label: ACCESS with no account uses rider ID and program 17
+    instructions: |
+      PERSONA: Jamie. Speak English. One short answer at a time.
+      OPENING LINE: "My number is 213-555-0141."
+      FACTS: You use ACCESS. Your rider ID is A17. You want a booking, not a transfer.
+      DO, IN ORDER:
+      1. When asked DART or ACCESS, say ACCESS.
+      2. When asked for a rider ID, say A17.
+      3. When asked booking or transfer, say booking, then stop.
+    agent_expectations: >
+      Asks for a rider ID, checks eligibility with rider ID A17 and program 17,
+      then asks whether they want a booking or a transfer. Sending a program
+      other than 17, or skipping the rider ID, is a fail.
+    userdata:
+      fixture: access_no_account

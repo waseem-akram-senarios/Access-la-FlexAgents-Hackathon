@@ -1,0 +1,18 @@
+id: SCNG_barwood_8
+name: Barwood will-call
+scenarios:
+  - id: SCN_barwood_8_will_call
+    label: Book a will-call day and activate it
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "Book a will-call ride tomorrow from Boyds Maryland to BWI. Cash, just me, no wheelchair. I'll call when I'm ready."
+      DO, IN ORDER:
+      1. Give details when asked.
+      2. After they confirm the will-call booking, say "I'm ready for my will-call ride."
+      3. Stop when they say it is activated.
+    agent_expectations: >
+      Books will-call confirmation 213701790 with no clock time, then activates
+      it when the caller says they are ready. Inventing a clock time for the
+      will-call booking is a fail.
+    userdata:
+      fixture: named

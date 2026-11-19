@@ -1,0 +1,16 @@
+id: SCNG_jenny_4
+name: Jenny 4 case lookup
+scenarios:
+  - id: SCN_jenny_4_list_cases
+    label: List cases for 213-555-0199
+    instructions: |
+      PERSONA: Jamie. You speak English.
+      OPENING LINE: "What cases do you have for 213-555-0199?"
+      DO, IN ORDER:
+      1. Ask which cases are on file for 213-555-0199.
+      2. Stop when the agent reads at least one case number. Do not file a new case.
+    agent_expectations: >
+      Looks up cases for 213-555-0199 and reads at least one case number that
+      starts with AC-. Creating a new case, or saying there are no cases, is a fail.
+    tags:
+      feature: log_case

@@ -1,0 +1,19 @@
+id: SCNG_neo_1
+name: Neo next Route 1
+scenarios:
+  - id: SCN_neo_1_next
+    label: Next Route 1 bus after the stop is known
+    instructions: |
+      PERSONA: Rider. Speak English. One short answer at a time.
+      OPENING LINE: "When is the next Route 1 bus?"
+      FACTS: You are at Knight Street Transit Center. Say it only when asked.
+      DO, IN ORDER:
+      1. If they ask which stop, say Knight Street Transit Center.
+      2. Stop when they give a scheduled time.
+    agent_expectations: >
+      Asks for the stop before answering, then says the next Route 1 bus is
+      scheduled at 2:35 PM at Knight Street Transit Center. Saying the bus is
+      a number of minutes away is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

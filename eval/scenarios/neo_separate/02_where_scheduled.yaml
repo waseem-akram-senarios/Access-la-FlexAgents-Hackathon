@@ -1,0 +1,19 @@
+id: SCNG_neo_2
+name: Neo where is my bus
+scenarios:
+  - id: SCN_neo_2_where
+    label: Where is my bus uses the schedule, not a live ETA
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "Where is my bus?"
+      FACTS: Route 1. Knight Street Transit Center. Give each only when asked.
+      DO, IN ORDER:
+      1. Answer the clarifying questions.
+      2. Stop when they give a scheduled time.
+    agent_expectations: >
+      Does not say the bus is minutes away. Says it can help with the scheduled
+      time and that the next Route 1 bus is scheduled at 2:35 PM at Knight
+      Street Transit Center.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

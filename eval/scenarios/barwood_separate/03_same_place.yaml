@@ -1,0 +1,16 @@
+id: SCNG_barwood_3
+name: Barwood same place
+scenarios:
+  - id: SCN_barwood_3_same_place
+    label: Reject the same pickup and drop-off
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "Pick me up at BWI Airport and drop me at BWI Airport tomorrow at 9 AM. Cash, just me, no wheelchair."
+      DO, IN ORDER:
+      1. Keep both places as BWI Airport if they ask again.
+      2. Stop when they say the drop-off cannot be the same as the pickup.
+    agent_expectations: >
+      Says the drop-off cannot be the same as the pickup and does not book a
+      trip. Giving a confirmation number is a fail.
+    userdata:
+      fixture: named

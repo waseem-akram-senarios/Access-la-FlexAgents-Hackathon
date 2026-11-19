@@ -1,0 +1,20 @@
+id: SCNG_jenny_8
+name: Jenny 8 complaint line
+scenarios:
+  - id: SCN_jenny_8_complaint_line
+    label: Who to call to complain, and are they open
+    instructions: |
+      PERSONA: Jamie, an Access LA rider. You speak English.
+      OPENING LINE: "I want to complain about a driver. Who do I call, and are they open right now?"
+      DO, IN ORDER:
+      1. Ask which department handles a complaint and whether it is open right now.
+      2. Stop when you hear a department, a phone number, and open or closed.
+         Do not ask them to file the complaint.
+    agent_expectations: >
+      Uses the directory tools and names Customer Relations, the phone number
+      returned by the tool, and whether that department is open or closed.
+      Routing this to Lost and Found, inventing a phone number, or filing a
+      case is a fail.
+    tags:
+      feature: find_department
+      case: complaint_line

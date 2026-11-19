@@ -1,0 +1,17 @@
+id: SCNG_neo_9
+name: Neo detour
+scenarios:
+  - id: SCN_neo_9_detour
+    label: Detour and stop closure alert
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "Is there a detour or stop closure for Route 1 at Knight Street Transit Center?"
+      DO, IN ORDER:
+      1. Ask about a detour or closure.
+      2. Stop after the alert.
+    agent_expectations: >
+      Says Route 1 is on a detour and Knight Street Transit Center is closed
+      today. Saying there is no alert is a fail. Offering a transfer is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

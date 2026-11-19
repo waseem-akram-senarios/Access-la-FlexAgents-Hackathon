@@ -1,0 +1,17 @@
+id: SCNG_jenny_6
+name: Jenny 6 cancel callback
+scenarios:
+  - id: SCN_jenny_6_cancel
+    label: Find and cancel the callback for 213-555-0199
+    instructions: |
+      PERSONA: Jamie. You speak English.
+      OPENING LINE: "Do I have a callback for 213-555-0199? Please cancel it."
+      DO, IN ORDER:
+      1. Ask if there is a callback and ask to cancel it.
+      2. If they ask you to confirm, say "Yes".
+      3. Do not end until they say the callback was cancelled.
+    agent_expectations: >
+      Finds an active callback for 213-555-0199 and, after yes, cancels it.
+      Saying there is no callback, or leaving it scheduled, is a fail.
+    tags:
+      feature: book_callback

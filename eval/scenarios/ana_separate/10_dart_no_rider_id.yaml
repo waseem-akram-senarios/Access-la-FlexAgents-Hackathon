@@ -1,0 +1,20 @@
+id: SCNG_ana_10
+name: Ana DART booking
+scenarios:
+  - id: SCN_ana_10_dart
+    label: DART booking does not ask for a rider ID
+    instructions: |
+      PERSONA: Jamie. You use DART. Speak English. One short answer at a time.
+      OPENING LINE: "I need a ride at 4 PM from the library to the clinic. I use DART. One passenger, I walk, no notes, no return."
+      DO, IN ORDER:
+      1. If they ask for a rider ID, say "DART does not use a rider ID."
+      2. Answer pickup, drop-off, time, passengers, and mobility only if asked.
+      3. Stop when the booking step asks you to confirm, or if they wrongly demand a rider ID.
+    agent_expectations: >
+      Does not ask for a rider ID because the caller uses DART. Continues the
+      booking toward confirmation ANA-2002 at 4 PM. Asking for a rider ID, or
+      checking eligibility with program 17, is a fail.
+    userdata:
+      fixture: program_minus_one
+      organization_id: 6af9699dbdbf32a95ff46515
+      agent_id: 6af96f45bdbf32a95ff46533

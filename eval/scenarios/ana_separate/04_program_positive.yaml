@@ -1,0 +1,19 @@
+id: SCNG_ana_4
+name: Ana program asks rider ID
+scenarios:
+  - id: SCN_ana_4_program_5
+    label: Program above 0 still asks for the rider ID
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "My number is 213-555-0143. I want a ride from the library to the clinic at 2 PM."
+      FACTS: Your rider ID is R-55. Give it only when asked.
+      DO, IN ORDER:
+      1. If they ask for the rider ID, say R-55.
+      2. Then answer the booking questions one at a time: library, clinic, 2 PM, 1 passenger, no wheelchair, no notes, no return.
+      3. Do not say yes unless the booking step itself asks.
+    agent_expectations: >
+      Asks for the rider ID even though the profile already has one. Checks
+      eligibility with program 5, not 17. A name is not accepted instead of the
+      rider ID. Booking without that check is a fail.
+    userdata:
+      fixture: program_positive

@@ -1,0 +1,17 @@
+id: SCNG_neo_6
+name: Neo frequency
+scenarios:
+  - id: SCN_neo_6_often
+    label: How often Route 1 comes
+    instructions: |
+      PERSONA: Rider. Speak English.
+      OPENING LINE: "How often does Route 1 come at Knight Street Transit Center?"
+      DO, IN ORDER:
+      1. Ask how often it comes.
+      2. Stop after the frequency.
+    agent_expectations: >
+      Says Route 1 is scheduled every 30 minutes. Inventing a different
+      frequency is a fail.
+    userdata:
+      organization_id: 6af72a3c4431b640e6041707
+      agent_id: 6af72aab4431b640e6041709

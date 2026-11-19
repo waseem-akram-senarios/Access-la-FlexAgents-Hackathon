@@ -1,0 +1,20 @@
+id: SCNG_barwood_1
+name: Barwood normal booking
+scenarios:
+  - id: SCN_barwood_1_book_return
+    label: Book Boyds to BWI with cash and offer a return
+    instructions: |
+      PERSONA: Jamie in Boyds, Maryland. Speak English. Answer one question at a time.
+      OPENING LINE: "I need a ride tomorrow at 9 AM from Boyds Maryland to BWI Airport. I'll pay cash. Just me, no wheelchair."
+      DO, IN ORDER:
+      1. Give those details when asked, one at a time.
+      2. When they read the fare and confirmation, say yes.
+      3. If they ask about a return trip, say "No thanks" and stop.
+    agent_expectations: >
+      Quotes fare 120.50 from the tool, gives confirmation 213701786, and asks
+      whether a return trip is needed. Inventing a different fare or confirmation
+      is a fail.
+    userdata:
+      fixture: named
+      organization_id: 6af96a0fbdbf32a95ff4651b
+      agent_id: 6af97679bdbf32a95ff46702

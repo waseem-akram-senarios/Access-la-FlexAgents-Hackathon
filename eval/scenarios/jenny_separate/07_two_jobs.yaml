@@ -1,0 +1,19 @@
+id: SCNG_jenny_7
+name: Jenny 7 two jobs
+scenarios:
+  - id: SCN_jenny_7_two_jobs
+    label: Lost bag and a rude driver are two separate cases
+    instructions: |
+      PERSONA: Jamie. You speak English. You confirm each issue separately.
+      OPENING LINE: "I left my bag on the 7 bus, and the driver was rude. Number 213-555-0199."
+      DO, IN ORDER:
+      1. State both issues and the phone number in the opening line.
+      2. When they read back the lost bag, say "Yes".
+      3. When they read back the rude driver, say "Yes".
+      4. Do not end until you have heard two different case numbers, each starting with AC-.
+    agent_expectations: >
+      Files two separate cases, one for the lost bag and one for the rude
+      driver, and sends a text for each. The two case numbers must both start
+      with AC- and must not be the same number. One case for both issues is a fail.
+    tags:
+      feature: two_jobs

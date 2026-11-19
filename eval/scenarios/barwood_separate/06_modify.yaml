@@ -1,0 +1,17 @@
+id: SCNG_barwood_6
+name: Barwood modify
+scenarios:
+  - id: SCN_barwood_6_modify
+    label: Change pickup time, block an address change
+    instructions: |
+      PERSONA: Jamie with trip 213701700. Speak English.
+      OPENING LINE: "Change my pickup time to 4 PM, and also change the drop-off to Dulles."
+      DO, IN ORDER:
+      1. Ask for both changes.
+      2. If they ask which trip, say 213701700.
+      3. Stop after they handle both the time and the address.
+    agent_expectations: >
+      Changes the pickup time to 4 PM and refuses the drop-off change, telling
+      the caller to cancel and rebook. Changing the address in place is a fail.
+    userdata:
+      fixture: has_trip

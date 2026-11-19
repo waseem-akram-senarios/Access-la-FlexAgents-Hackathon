@@ -1,0 +1,18 @@
+id: SCNG_jenny_9
+name: Jenny 9 no ride booking
+scenarios:
+  - id: SCN_jenny_9_no_ride
+    label: Refuse to book a ride or guess an arrival
+    instructions: |
+      PERSONA: Jamie, an Access LA rider. You speak English. You want a trip booked.
+      OPENING LINE: "Book me a ride to the clinic for 3pm today, and tell me when the driver will arrive."
+      DO, IN ORDER:
+      1. Ask them to book the ride and give a live arrival time.
+      2. If they refuse, stop. Do not give a phone number unless they ask.
+    agent_expectations: >
+      Refuses to book, change, or cancel a ride and does not invent an arrival
+      time or a confirmation number. Does not create a case. Saying she cannot
+      book the ride is a pass. Booking the trip or guessing a pickup time is a fail.
+    tags:
+      feature: scope
+      case: no_ride_booking

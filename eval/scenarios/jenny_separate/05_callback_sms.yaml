@@ -1,0 +1,18 @@
+id: SCNG_jenny_5
+name: Jenny 5 book callback
+scenarios:
+  - id: SCN_jenny_5_callback
+    label: Book a Lost and Found callback tomorrow morning
+    instructions: |
+      PERSONA: Jamie. You speak English. You agree to the first morning time offered.
+      OPENING LINE: "Lost and found is closed. Book me a callback tomorrow morning at 213-555-0199."
+      DO, IN ORDER:
+      1. Ask for a callback tomorrow morning at 213-555-0199.
+      2. When they offer a time, say "Yes".
+      3. Do not end until they give a callback number that starts with CB- and say a text was sent.
+    agent_expectations: >
+      Offers a morning slot, and after yes books it and sends a text. The reply
+      includes a callback id starting with CB- and confirms the text. Booking
+      without a CB- id, or skipping the text, is a fail.
+    tags:
+      feature: book_callback

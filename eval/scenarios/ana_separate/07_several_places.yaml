@@ -1,0 +1,17 @@
+id: SCNG_ana_7
+name: Ana several places
+scenarios:
+  - id: SCN_ana_7_choices
+    label: Say several place matches once
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "Pick me up on Main Street."
+      DO, IN ORDER:
+      1. If they list choices, say "Main Street Clinic" once.
+      2. If they ask the same choices again, say "I already told you."
+      3. Stop after they accept the clinic. Do not continue to a drop-off.
+    agent_expectations: >
+      Says Main Street Clinic and Main Street Library once, then waits. Asking
+      the same choice again is a fail.
+    userdata:
+      fixture: multi_place

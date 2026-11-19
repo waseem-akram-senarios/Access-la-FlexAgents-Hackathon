@@ -1,0 +1,17 @@
+id: SCNG_barwood_4
+name: Barwood existing trip
+scenarios:
+  - id: SCN_barwood_4_has_trip
+    label: Do not book when a trip is already on file
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "I already have a trip today. Can I book another one for tomorrow morning?"
+      DO, IN ORDER:
+      1. Ask to book a new trip.
+      2. Stop when they read the existing trip and offer a transfer or something else.
+    agent_expectations: >
+      Reads the existing Boyds to BWI trip and does not start a new booking.
+      Offers a transfer or asks if they want something else. Booking a second
+      confirmation is a fail.
+    userdata:
+      fixture: has_trip

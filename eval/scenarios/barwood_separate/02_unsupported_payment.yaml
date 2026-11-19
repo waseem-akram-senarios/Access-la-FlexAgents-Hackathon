@@ -1,0 +1,16 @@
+id: SCNG_barwood_2
+name: Barwood unsupported payment
+scenarios:
+  - id: SCN_barwood_2_check
+    label: Reject a check and offer a transfer
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "I want a ride from Boyds Maryland to BWI tomorrow at 9 AM. I'll pay by personal check."
+      DO, IN ORDER:
+      1. Insist once that you will pay by check.
+      2. Stop when they refuse or offer a transfer. Do not switch to cash.
+    agent_expectations: >
+      Refuses the check, does not book a trip, and offers a transfer to a
+      dispatcher. Booking the trip on a check is a fail.
+    userdata:
+      fixture: named

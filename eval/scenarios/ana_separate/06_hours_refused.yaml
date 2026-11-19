@@ -1,0 +1,18 @@
+id: SCNG_ana_6
+name: Ana hours refused
+scenarios:
+  - id: SCN_ana_6_stop
+    label: A service-hours refusal stops the booking
+    instructions: |
+      PERSONA: Jamie. Speak English.
+      OPENING LINE: "I need to be at the clinic by 6 AM. Pick me up from the library."
+      DO, IN ORDER:
+      1. Confirm library, then clinic, if asked.
+      2. Stop when they say the booking cannot continue.
+         Do not give passengers or payment.
+    agent_expectations: >
+      Gets a pickup time from dispatch, then a service check refuses it, and
+      the booking stops. Asking for passengers, a fare, or payment after the
+      refusal is a fail.
+    userdata:
+      fixture: hours_refused
