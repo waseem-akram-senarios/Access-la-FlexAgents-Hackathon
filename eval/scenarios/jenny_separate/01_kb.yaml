@@ -16,3 +16,8 @@ scenarios:
       it is not in the materials and naming the document searched is a pass.
     tags:
       feature: answer_policy
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f
+      livekit_agent_name: flexagent.staging
+      dispatch_rule: flexagents-inbound-staging

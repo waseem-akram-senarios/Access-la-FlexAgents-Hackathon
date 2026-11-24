@@ -18,3 +18,8 @@ scenarios:
     tags:
       feature: log_case
       case: confirmation_refused
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f
+      livekit_agent_name: flexagent.staging
+      dispatch_rule: flexagents-inbound-staging

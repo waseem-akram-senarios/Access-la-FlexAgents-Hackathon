@@ -163,7 +163,12 @@ async def entrypoint(ctx: JobContext) -> None:
         raw = loaded if isinstance(loaded, dict) else {}
     STATE = {"fixture": raw.get("fixture", "named"), "trips": []}
     await ctx.connect()
-    session = AgentSession(llm="openai/gpt-4.1-mini", max_tool_steps=8)
+    session = AgentSession(
+        stt="assemblyai/universal-streaming:en",
+        llm="openai/gpt-4.1-mini",
+        tts="cartesia/sonic",
+        max_tool_steps=8,
+    )
     await session.start(agent=Amelia(), room=ctx.room)
 
 

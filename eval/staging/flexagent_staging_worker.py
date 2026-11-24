@@ -246,10 +246,15 @@ class AccessJenny(Agent):
         return json.dumps({"http_status": status, "status": cancelled, "callback_id": callback_id})
 
 
-@server.rtc_session(agent_name="")
+@server.rtc_session(agent_name="flexagent.staging")
 async def entrypoint(ctx: JobContext) -> None:
     await ctx.connect()
-    session = AgentSession(llm="openai/gpt-4.1-mini", max_tool_steps=8)
+    session = AgentSession(
+        stt="assemblyai/universal-streaming:en",
+        llm="openai/gpt-4.1-mini",
+        tts="cartesia/sonic",
+        max_tool_steps=8,
+    )
     await session.start(agent=AccessJenny(), room=ctx.room)
 
 

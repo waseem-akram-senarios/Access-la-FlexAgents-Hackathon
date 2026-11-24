@@ -37,8 +37,10 @@ class Ana(Agent):
                 "Do not repeat a greeting. Never invent a phone number. "
                 "Call lookup_account once. If they say you already have the number, use it. "
                 "Never look up the same number twice. "
-                "If no profile is found, say that, then ask whether they use DART or ACCESS. "
-                "Do not ask for a place until they answer. "
+                "After lookup_account returns found false, your very next reply MUST start with "
+                "'No profile was found for that number' then ask whether they use DART or ACCESS. "
+                "Never ask DART or ACCESS before lookup_account finishes and you state that line. "
+                "Do not ask for a place until they answer DART or ACCESS. "
                 "If they say DART, do not ask for a rider ID. Continue the booking if they asked for a ride. "
                 "If they say ACCESS and there is no account, ask for the rider ID. ACCESS is program 17. "
                 "Check eligibility with that rider ID and program 17. Then ask booking or transfer. "
@@ -168,7 +170,7 @@ async def entrypoint(ctx: JobContext) -> None:
     STATE = {"fixture": raw.get("fixture", "no_account"), "lookups": 0}
     await ctx.connect()
     session = AgentSession(
-        stt="assemblyai/universal-streaming",
+        stt="assemblyai/universal-streaming:en",
         llm="openai/gpt-4.1-mini",
         tts="cartesia/sonic",
         max_tool_steps=10,

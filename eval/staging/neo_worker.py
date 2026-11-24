@@ -35,6 +35,9 @@ class Neo(Agent):
                 "Keep the route and stop the caller already gave. "
                 "Phase 1 schedule answers must say scheduled. Never say the bus is minutes away "
                 "unless a realtime tool returned a prediction. "
+                "When realtime_trip returns scheduled, predicted, and late_minutes, say all three "
+                "in one sentence (for example scheduled 2:35 PM, predicted 2:42 PM, 7 minutes late). "
+                "Do not ask a follow-up question after a complete yes-or-no or delay answer. "
                 "Speak the tool result. Do not invent a time, route, or stop."
             )
         )
@@ -106,7 +109,7 @@ class Neo(Agent):
 async def entrypoint(ctx: JobContext) -> None:
     await ctx.connect()
     session = AgentSession(
-        stt="assemblyai/universal-streaming",
+        stt="assemblyai/universal-streaming:en",
         llm="openai/gpt-4.1-mini",
         tts="cartesia/sonic",
         max_tool_steps=6,
