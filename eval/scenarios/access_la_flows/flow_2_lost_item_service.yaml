@@ -1,0 +1,25 @@
+id: SCNG_access_la_flow_2
+name: Access LA Call 2 — Lost item service (writes)
+scenarios:
+  - id: SCN_flow_2_lost_item_service
+    label: Case lookup callback cancel one incident
+    instructions: |
+      PERSONA: Jamie. English. Phone 213-555-0199. Say Yes only after read-back.
+      DO, IN ORDER:
+      1. OPENING: "I left my backpack on the 7 bus yesterday at 2pm. File a lost item report. Call me at 213-555-0199."
+      2. If they read back, say "Yes". Wait for AC- case number and text confirmation.
+      3. Ask: "What cases do you have for 213-555-0199?"
+      4. Ask: "Book me a callback tomorrow morning at 213-555-0199." When they offer a morning slot, say "Yes".
+      5. Ask: "Do I have a callback for 213-555-0199? Please cancel it." Say "Yes" to confirm cancel.
+      6. Stop after cancel is confirmed.
+    agent_expectations: >
+      Creates one lost-item case with AC- prefix and sends text after yes.
+      Lists the case for the phone on lookup.
+      Books a morning callback with CB or callback id and sends text.
+      Finds and cancels the callback after confirmation.
+      Skipping read-back yes before writes is a fail.
+    tags:
+      flow: call_2
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f

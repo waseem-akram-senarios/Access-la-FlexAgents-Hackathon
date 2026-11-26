@@ -1,0 +1,17 @@
+id: SCNG_jenny_remote_job_metadata
+name: Jenny remote — job metadata dispatch (not lk agent simulate)
+# LiveKit Agent Simulations cannot set job.metadata (see REMOTE_FLEXAGENT_STAGING_SIM.md).
+# Use eval/platform/dispatch_flexagent_staging_job_metadata.sh instead.
+scenarios:
+  - id: SCN_jenny_fare_after_dispatch
+    label: Fare question after job-metadata dispatch
+    instructions: |
+      PERSONA: Jamie. English. One question.
+      OPENING LINE: "What's the current one-way Access fare?"
+      DO, IN ORDER:
+      1. Ask for the one-way fare once the call is connected.
+      2. Stop after the agent answers.
+    agent_expectations: >
+      KB-only fare answer; name document or say not in materials; no invented fare.
+    tags:
+      feature: answer_policy

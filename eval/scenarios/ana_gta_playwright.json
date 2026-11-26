@@ -1,0 +1,218 @@
+{
+  "agent": "Ana — GTA",
+  "organization_id": "6af9699dbdbf32a95ff46515",
+  "agent_id": "6af96f45bdbf32a95ff46533",
+  "dashboard_test_url": "https://dashboard-staging.flexagents.ai/organization/6af9699dbdbf32a95ff46515/agent/6af96f45bdbf32a95ff46533/test",
+  "reference_today": "25 November 2026",
+  "notes": "Playwright text chat on staging test page. One fresh Start Call per case. Baseline from QA doc + GTA 25 Nov 2026.",
+  "cases": [
+    {
+      "id": "GTA-1",
+      "group": "gta_25nov",
+      "title": "Wrong booking date",
+      "session_ref": "6b06a0690063f72e8de04f42",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0143. I use DART.",
+        "Book a ride tomorrow at 3 PM from Moses Lake Public Library to Samaritan Clinic on Patton. One passenger, I walk, no notes, no return.",
+        "Yes, confirm tomorrow is 26 November 2026 and read the full date before you book."
+      ],
+      "pass": "Uses correct calendar date; states full date (e.g. 26 November 2026) before booking; does not book wrong day."
+    },
+    {
+      "id": "GTA-2",
+      "group": "gta_25nov",
+      "title": "Agent confused during booking",
+      "session_ref": "6b06be631004ee7dccebf2a3",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0143. DART. One passenger, I walk.",
+        "Pickup: Moses Lake Public Library. Drop-off: Samaritan Clinic on Patton.",
+        "Pickup time tomorrow at 4 PM. No return trip, no notes.",
+        "You already have pickup, drop-off, time, and passengers — please continue without asking again."
+      ],
+      "pass": "Does not re-ask pickup, drop-off, date, time, or passenger count after they were given."
+    },
+    {
+      "id": "GTA-3",
+      "group": "gta_25nov",
+      "title": "Time / service hours explanation",
+      "session_ref": "6b06c7032fe04b344b9a0d3a",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0143. DART.",
+        "I need to be at the clinic by 6 AM tomorrow. Pick me up from the library.",
+        "Is 6 AM inside your service hours? Please explain clearly — do not just say you cannot help."
+      ],
+      "pass": "Checks or explains service hours; does not dead-end with only 'I cannot help'."
+    },
+    {
+      "id": "GTA-4",
+      "group": "gta_25nov",
+      "title": "DART repeats client ID",
+      "session_ref": "6b06d5931c85e8f928fb8234",
+      "baseline": "fail",
+      "steps": [
+        "I need a DART ride at 4 PM from the library to the clinic. One passenger, I walk, no notes, no return. I do not have a rider ID.",
+        "DART does not use a rider ID. Please give final confirmation and book the ride.",
+        "Yes."
+      ],
+      "pass": "No repeated client or rider ID asks for DART; moves to confirmation and books or completes flow."
+    },
+    {
+      "id": "N-01",
+      "group": "qa_matrix",
+      "title": "Service before phone lookup",
+      "baseline": "fail",
+      "evidence": "SCN_ana_1_no_profile SR_tZSsMEfxeEvX",
+      "steps": [
+        "My number is 213-555-0140. I need a ride."
+      ],
+      "pass": "Looks up phone first; says no profile; then asks DART or ACCESS — not before lookup."
+    },
+    {
+      "id": "N-02",
+      "group": "qa_matrix",
+      "title": "Program 5 still asks rider ID",
+      "baseline": "fail",
+      "evidence": "SCN_ana_4_program_5",
+      "steps": [
+        "My number is 213-555-0143. I want a ride from the library to the clinic at 2 PM tomorrow.",
+        "My rider ID is R-55."
+      ],
+      "pass": "Asks for rider ID and eligibility on program 5 before continuing booking."
+    },
+    {
+      "id": "N-03",
+      "group": "qa_matrix",
+      "title": "Zero fare — complete booking",
+      "baseline": "fail",
+      "evidence": "SCN_ana_5_no_payment",
+      "steps": [
+        "My number is 213-555-0142. Book a ride at 3 PM tomorrow from the library to the clinic. One passenger, I walk, no notes, no return.",
+        "Yes."
+      ],
+      "pass": "No payment question when fare is zero; reaches confirmation or confirmation number."
+    },
+    {
+      "id": "N-04",
+      "group": "qa_matrix",
+      "title": "Main Street place disambiguation",
+      "baseline": "fail",
+      "evidence": "SCN_ana_7_choices",
+      "steps": [
+        "My number is 213-555-0143. Pick me up on Main Street.",
+        "Main Street Clinic."
+      ],
+      "pass": "Lists Main Street matches once; accepts caller choice without repeating same list."
+    },
+    {
+      "id": "N-05",
+      "group": "qa_matrix",
+      "title": "Cancel ANA-1001 (sim)",
+      "baseline": "fail",
+      "evidence": "SCN_ana_8_cancel",
+      "steps": [
+        "My number is 213-555-0142. Cancel confirmation ANA-1001.",
+        "Yes."
+      ],
+      "pass": "Cancels named confirmation ANA-1001 without asking which trip."
+    },
+    {
+      "id": "N-06",
+      "group": "qa_matrix",
+      "title": "ACCESS without rider ID",
+      "baseline": "fail",
+      "evidence": "Call 6b001745…",
+      "steps": [
+        "My number is 213-555-0140.",
+        "ACCESS. I do not have a rider ID. Book the ride anyway."
+      ],
+      "pass": "Per product: either books with policy or offers transfer; baseline QA marked fail when hard stop."
+    },
+    {
+      "id": "N-07",
+      "group": "qa_matrix",
+      "title": "Rider ID 817 / R55 parsing",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0141. ACCESS.",
+        "My rider ID is A17."
+      ],
+      "pass": "Accepts valid ACCESS ID format (A17) or explains rejection clearly for bad IDs."
+    },
+    {
+      "id": "N-08",
+      "group": "qa_matrix",
+      "title": "DART where's my ride without rider ID",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0142. DART. Where is my ride? I do not have a rider ID."
+      ],
+      "pass": "Gives ride status without requiring rider ID on DART program -1 profile."
+    },
+    {
+      "id": "N-09",
+      "group": "qa_matrix",
+      "title": "Cannot create rider ID",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0140. ACCESS. Create a rider ID for me."
+      ],
+      "pass": "Honestly cannot create IDs; offers transfer or next step."
+    },
+    {
+      "id": "N-10",
+      "group": "qa_matrix",
+      "title": "Address / library geocode",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0143. DART. Pick me up at Rockville, or Snouffer School Road, or the museum.",
+        "Moses Lake Public Library."
+      ],
+      "pass": "Disambiguates or offers library list; not only 'no match'."
+    },
+    {
+      "id": "N-11",
+      "group": "qa_matrix",
+      "title": "Cancel ANA-1001 not found",
+      "baseline": "fail",
+      "steps": [
+        "Cancel confirmation ANA-1001.",
+        "Yes."
+      ],
+      "pass": "Honest not-found OR cancels if ride exists in staging data."
+    },
+    {
+      "id": "N-12",
+      "group": "qa_matrix",
+      "title": "Jamie vs ANI profile confusion",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0149.",
+        "My name is Jamie. Do not use another name on this call."
+      ],
+      "pass": "Asks for name without guessing; uses Jamie after stated."
+    },
+    {
+      "id": "N-13",
+      "group": "qa_matrix",
+      "title": "Same-day 4 PM booking",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0143. DART. Book a ride today at 4 PM from the library to the clinic."
+      ],
+      "pass": "Either books if policy allows same-day or clearly states same-day rule once."
+    },
+    {
+      "id": "N-14",
+      "group": "qa_matrix",
+      "title": "Service hours — acceptable window",
+      "baseline": "fail",
+      "steps": [
+        "My number is 213-555-0143. DART. Tomorrow at 2 PM from library to clinic — is that inside service hours?"
+      ],
+      "pass": "Accepts in-hours time or explains service window once (not every time rejected)."
+    }
+  ]
+}

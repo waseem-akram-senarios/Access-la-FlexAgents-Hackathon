@@ -1,0 +1,17 @@
+id: SCNG_jenny_remote_staging
+name: Jenny remote flexagent.staging (simulate — no userdata)
+# lk agent simulate does NOT inject job.metadata. For job metadata use dispatch_flexagent_staging_job_metadata.sh
+scenarios:
+  - id: SCN_jenny_remote_kb_no_userdata
+    label: Current one-way Access fare (remote, no userdata block)
+    instructions: |
+      PERSONA: Jamie, an Access LA rider. You speak English. One question only.
+      OPENING LINE: "What's the current one-way Access fare?"
+      DO, IN ORDER:
+      1. Ask for the current one-way fare.
+      2. Stop after the agent answers.
+    agent_expectations: >
+      Answers from KB only; name document or not in materials; no invented fare.
+    tags:
+      feature: answer_policy
+      target: flexagent.staging

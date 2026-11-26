@@ -1,0 +1,25 @@
+id: SCNG_access_la_flow_1
+name: Access LA Call 1 — Answers only (no writes)
+scenarios:
+  - id: SCN_flow_1_answers_only
+    label: KB and directory only, four topics one call
+    instructions: |
+      PERSONA: Jamie, Access LA rider. English only. One topic per turn; wait for the agent before the next.
+      DO, IN ORDER:
+      1. OPENING: "What's the current one-way Access fare?"
+      2. When answered, ask: "How do I report a lost item?"
+      3. When answered, ask: "Who do I call if I left my bag on the bus? Is that department open right now?"
+      4. When answered, ask: "I want to complain about a driver. Who do I call, and are they open right now?"
+      5. Stop after step 4. Do not ask to file a case or book a callback.
+    agent_expectations: >
+      Step 1: KB answer with document name or honest not in materials; no invented fare.
+      Step 2: KB process only; must not create a case or give a case number.
+      Step 3: Lost and Found phone and open or closed from directory; no case.
+      Step 4: Complaint department phone and open or closed; no case filed.
+      Inventing phones or filing during steps 1-4 is a fail.
+    tags:
+      flow: call_1
+      feature: answer_policy
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f

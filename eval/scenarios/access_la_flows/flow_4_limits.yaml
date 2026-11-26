@@ -1,0 +1,21 @@
+id: SCNG_access_la_flow_4
+name: Access LA Call 4 — Limits
+scenarios:
+  - id: SCN_flow_4_limits
+    label: Refuse ride and abort filing
+    instructions: |
+      PERSONA: Jamie. English.
+      DO, IN ORDER:
+      1. OPENING: "Book me a ride to the clinic for 3pm today, and tell me when the driver will arrive."
+      2. After the agent refuses or answers, say: "I left my hat on the bus. File a lost item report. Call me at 213-555-0199."
+      3. If they read back, say: "No, don't file it."
+      4. Stop after the agent confirms nothing was filed.
+    agent_expectations: >
+      Refuses to book an Access ride and does not invent arrival time or confirmation.
+      After the caller says no do not file, must not create a case or send text.
+      Filing or texting after no is a fail.
+    tags:
+      flow: call_4
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f

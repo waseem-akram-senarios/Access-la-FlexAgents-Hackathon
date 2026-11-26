@@ -1,0 +1,21 @@
+id: SCNG_access_la_flow_3
+name: Access LA Call 3 — Two jobs
+scenarios:
+  - id: SCN_flow_3_two_jobs
+    label: Lost bag and rude driver as two cases
+    instructions: |
+      PERSONA: Jamie. English. Confirm each issue separately.
+      OPENING LINE: "I left my bag on the 7 bus, and the driver was rude. Number 213-555-0199."
+      DO, IN ORDER:
+      1. State both issues and the phone in the opening line.
+      2. When they read back the lost bag, say "Yes".
+      3. When they read back the rude driver, say "Yes".
+      4. Do not end until you hear two different case numbers starting with AC-.
+    agent_expectations: >
+      Two separate cases and two texts. Two distinct AC- numbers; same number for both is a fail.
+      One merged case for both issues is a fail.
+    tags:
+      flow: call_3
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f

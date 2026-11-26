@@ -1,0 +1,20 @@
+id: SCNG_jenny_sim_staging_meta
+name: Jenny sim — staging org or agent payload
+scenarios:
+  - id: SCN_jenny_fare_staging_meta
+    label: One-way Access fare
+    instructions: |
+      PERSONA: Jamie. English. One question only.
+      OPENING LINE: "What's the current one-way Access fare?"
+      DO, IN ORDER:
+      1. Ask for the current one-way fare.
+      2. Stop after the agent answers.
+    agent_expectations: >
+      KB fare answer with document name, or honest not in materials; no invented fare.
+    tags:
+      feature: answer_policy
+    userdata:
+      organization_id: 6aa1562861347fe1a3087d63
+      agent_id: 6af703a01d07b8f78656fe4f
+      livekit_agent_name: flexagent.staging
+      dispatch_rule: flexagents-inbound-staging
