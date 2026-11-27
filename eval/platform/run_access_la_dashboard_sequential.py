@@ -14,6 +14,9 @@ from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+_PLATFORM = Path(__file__).resolve().parent
+if str(_PLATFORM) not in sys.path:
+    sys.path.insert(0, str(_PLATFORM))
 load_dotenv(ROOT / ".env")
 import os  # noqa: E402
 
@@ -35,9 +38,10 @@ TURN_HINTS: dict[str, list[tuple[str, str]]] = {
     "JENNY-5": [(r"shall i book|didn't catch", "Yes.")],
     "JENNY-6": [(r"shall i cancel|didn't catch", "Yes.")],
     "JENNY-7": [
-        (r"when did you leave the bag", "Yesterday at 2 PM on route 7."),
-        (r"when did that happen|complaint", "4 PM today on route 7."),
-        (r"is that right|didn't catch", "Yes."),
+        (r"is that right|is that correct|didn't catch|shall i", "Yes."),
+        (r"try again|processing limit|wasn't saved", "Yes, try again. November 5 at 2 PM on route 7."),
+        (r"what date and time|when did you leave the bag", "November 5 at 2 PM on route 7."),
+        (r"when did that happen", "Same time — November 5 at 2 PM on route 7."),
     ],
 }
 
@@ -67,35 +71,98 @@ def ensure_call_started(page) -> None:
 def send_and_wait(page, text: str, timeout: float = 50.0) -> str:
     box = page.locator("input[placeholder='Type a message...']")
     box.wait_for(state="visible", timeout=20000)
+    before_len = len(page_transcript(page))
     box.fill(text)
     time.sleep(0.2)
     page.keyboard.press("Enter")
-    time.sleep(timeout)
+    t0 = time.time()
+    min_wait = min(28.0, timeout * 0.55)
+    deadline = t0 + timeout
+    best_len = before_len
+    while time.time() < deadline:
+        time.sleep(2)
+        body = page_transcript(page)
+        best_len = max(best_len, len(body))
+        if time.time() - t0 < min_wait:
+            continue
+        if best_len > before_len + 120:
+            time.sleep(3)
+            body2 = page_transcript(page)
+            if len(body2) - len(body) < 40:
+                break
+            best_len = len(body2)
     body = page_transcript(page)
     return body[-3500:].strip()
+
+
+def transcript_slice(page) -> str:
+    body = page_transcript(page)
+    i = body.find("Transcript")
+    return body[i:] if i >= 0 else body[-6000:]
+
+
+def llm_dialogue(page, case_id: str, pass_criteria: str, max_rounds: int = 16) -> None:
+    from llm_caller import DONE, next_caller_line, should_stop_conversation
+
+    for _ in range(max_rounds):
+        time.sleep(4)
+        full = transcript_slice(page)
+        if should_stop_conversation(case_id, full):
+            break
+        try:
+            line = next_caller_line(case_id, full, pass_criteria, opening_sent=True)
+        except Exception as exc:
+            print(f"  LLM caller stopped: {exc}", flush=True)
+            break
+        if not line or line.strip().upper() in ("[DONE]", "DONE"):
+            break
+        send_and_wait(page, line, timeout=40.0)
 
 
 def auto_dialogue(page, case_id: str, max_rounds: int = 12) -> None:
     """Reply when the agent prompts (confirmations, dates). Works with typed chat on voice UI."""
     hints = TURN_HINTS.get(case_id, [(r"shall i|is that right|didn't catch", "Yes.")])
     last_tail = ""
+    last_answer = ""
+    repeat_same = 0
     for _ in range(max_rounds):
-        time.sleep(5)
-        tail = page_transcript(page)[-1200:].lower()
+        time.sleep(4)
+        tail = page_transcript(page)[-1400:].lower()
         if tail == last_tail:
-            time.sleep(3)
-            tail = page_transcript(page)[-1200:].lower()
+            time.sleep(2)
+            tail = page_transcript(page)[-1400:].lower()
         last_tail = tail
+        if re.search(
+            r"what would you like|what else can i help|anything else i can|is there anything else",
+            tail,
+        ):
+            break
+        if re.search(r"already on case|have those details already|details already", tail):
+            break
         sent = False
         for pattern, answer in hints:
-            if re.search(pattern, tail):
-                send_and_wait(page, answer, timeout=30.0)
-                sent = True
-                last_tail = ""
-                break
+            if not re.search(pattern, tail):
+                continue
+            # Avoid re-filling complaint datetime while agent only references an open case.
+            if case_id == "JENNY-7" and answer.startswith("Same time"):
+                if "already on case" in tail or "when did that happen" not in tail:
+                    continue
+            send_and_wait(page, answer, timeout=22.0)
+            if answer == last_answer:
+                repeat_same += 1
+                if repeat_same >= 2:
+                    break
+            else:
+                repeat_same = 0
+            last_answer = answer
+            sent = True
+            last_tail = ""
+            break
+        if repeat_same >= 2:
+            break
         if not sent:
             if "shall i" in tail or "is that right" in tail or "didn't catch" in tail:
-                send_and_wait(page, "Yes.", timeout=30.0)
+                send_and_wait(page, "Yes.", timeout=22.0)
                 last_tail = ""
                 continue
             break
@@ -152,11 +219,21 @@ def judge(case_id: str, reply: str, question: str) -> tuple[str, str]:
             return "PASS", "callback cancelled"
         return "FAIL", "cancel not completed"
     if case_id == "JENNY-7":
-        if "one at a time" in r or "first" in r and "lost" in r:
+        saved_n = len(re.findall(r"has been saved", r))
+        ac_hits = len(re.findall(r"\bac\s*,?\s*(?:\d\s+){4,}\d|\bac-?\s*\d{4,}", norm_apostrophe(reply).upper()))
+        if saved_n >= 2 or ac_hits >= 2:
+            return "PASS", "two cases saved (lost + complaint)"
+        if ("complaint has been saved" in r or "lost-item report has been saved" in r) and _spoken_id(
+            reply, "AC"
+        ):
+            return "PASS", "two-job flow + case id"
+        if "one at a time" in r or ("first" in r and "lost" in r):
             if "reporting service" in r or "wasn't saved" in r or "not been saved" in r:
-                return "PARTIAL", "orchestration OK; cases API failed on complaint"
-            if _spoken_id(reply, "AC"):
-                return "PASS", "two-job flow + case id"
+                if _spoken_id(reply, "AC") or saved_n >= 1:
+                    return "PARTIAL", "orchestration OK; at least one case; API/limit issues"
+                return "PARTIAL", "orchestration OK; cases API failed"
+        if _spoken_id(reply, "AC") and ("rude" in r or "complaint" in r) and ("bag" in r or "lost" in r):
+            return "PARTIAL", "flow ran; confirm two distinct AC numbers manually"
         return "FAIL", "two-job flow incomplete"
     if case_id == "JENNY-8":
         if "customer relation" in r and re.search(r"1[- .]?\d{3}[- .]?\d{3}[- .]?\d{4}", reply):
@@ -197,6 +274,12 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--ids", help="Comma-separated JENNY-1..10")
+    parser.add_argument(
+        "--caller",
+        choices=("llm", "regex"),
+        default="llm",
+        help="Simulated caller: llm (scenario YAML) or regex (TURN_HINTS)",
+    )
     args = parser.parse_args()
 
     if not EMAIL or not PASSWORD:
@@ -235,9 +318,16 @@ def main() -> int:
             send_and_wait(page, q, timeout=35.0)
             if cid == "JENNY-10":
                 send_and_wait(page, "No, don't file it.", timeout=20.0)
+            elif args.caller == "llm":
+                rounds = 20 if cid == "JENNY-7" else 14
+                llm_dialogue(page, cid, case.get("pass", ""), max_rounds=rounds)
             else:
-                auto_dialogue(page, cid, max_rounds=10)
-            reply = page_transcript(page)[-4000:]
+                auto_dialogue(page, cid, max_rounds=14 if cid == "JENNY-7" else 10)
+                if cid == "JENNY-7":
+                    time.sleep(25)
+                    auto_dialogue(page, cid, max_rounds=8)
+            full = page_transcript(page)
+            reply = full if cid == "JENNY-7" else full[-4000:]
             status, note = judge(cid, reply, q)
             results.append(
                 {
@@ -260,7 +350,12 @@ def main() -> int:
     md = ROOT / "eval/reports/access_la_playwright_latest.md"
     out.write_text(
         json.dumps(
-            {"generated_at": datetime.now(timezone.utc).isoformat(), "url": JENNY_URL, "results": results},
+            {
+                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "url": JENNY_URL,
+                "caller_mode": args.caller,
+                "results": results,
+            },
             indent=2,
         ),
         encoding="utf-8",

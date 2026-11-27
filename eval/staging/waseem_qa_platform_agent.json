@@ -1,0 +1,72 @@
+{
+  "name": "Waseem QA Platform | Staging",
+  "organization": "AI Dev Lab",
+  "organization_id": "6aa1562861347fe1a3087d63",
+  "agent_id": "6b095a096bf2d249020d06bd",
+  "created_at": "2026-11-27T10:23:05.805Z",
+  "dashboard": {
+    "agents_list": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agents",
+    "test": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6b095a096bf2d249020d06bd/test",
+    "behavior": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6b095a096bf2d249020d06bd/behavior",
+    "prompt": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6b095a096bf2d249020d06bd/prompt"
+  },
+  "defaults_from_create_api": {
+    "languages": ["en"],
+    "llm": "openrouter / google/gemma-4-31b-it",
+    "stt": "livekit / assemblyai/universal-3-5-pro",
+    "tts": "livekit / fishaudio/s2-pro"
+  },
+  "prompt": {
+    "version": 4,
+    "prompt_id": "6b095e866bf2d249020d0e8b",
+    "local_source": "eval/staging/prompts/waseem_qa_platform.md",
+    "greeting": "Thanks for calling the Waseem QA Platform on staging. I'm your QA assistant. How can I help you today? Para español, hable en español. للعربية، تفضل بالعربية.",
+    "allowed_languages_behavior": "English, Arabic, Spanish",
+    "dashboard_url": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6b095a096bf2d249020d06bd/prompt"
+  },
+  "next_steps_for_gific152": [
+    "Behavior → Allowed Languages: English + Spanish (match prompt)",
+    "Test → Text → Start Session",
+    "GIFIC-152 report: eval/reports/GIFIC152_WASEEM_QA.md",
+    "Fix: Email sending sub-agent Spanish prompts (WQ-08)"
+  ],
+  "gific152": {
+    "script": "eval/platform/gific152_waseem_qa.py",
+    "report": "eval/reports/GIFIC152_WASEEM_QA.md",
+    "jira_draft": "eval/reports/GIFIC152_WASEEM_QA_JIRA.md",
+    "latest_log": "eval/reports/gific152_waseem_qa_logs/20261127T115554Z"
+  },
+  "sub_agents": [
+    {
+      "name": "Email sending",
+      "id": "6b095eea6bf2d249020d0ec5",
+      "prompt": "eval/staging/prompts/waseem_qa_email_subagent.md",
+      "url": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6b095a096bf2d249020d06bd/sub-agents/6b095eea6bf2d249020d0ec5"
+    },
+    {
+      "name": "Knowledge search",
+      "id": "6b095e976bf2d249020d0e8c",
+      "prompt": "eval/staging/prompts/waseem_qa_knowledge_subagent.md",
+      "url": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6b095a096bf2d249020d06bd/sub-agents/6b095e976bf2d249020d0e8c"
+    }
+  ],
+  "gific150_escalation": {
+    "script": "eval/platform/gific150_waseem_qa.py",
+    "report": "eval/reports/GIFIC150_WASEEM_QA.md",
+    "escalations_url": "https://dashboard-staging.flexagents.ai/organization/6aa1562861347fe1a3087d63/agent/6b095a096bf2d249020d06bd/escalations",
+    "rules_observed": [
+      {
+        "name": "Booking",
+        "target": "+15123256128",
+        "trigger_hint": "i want to book a rider",
+        "enabled": true
+      }
+    ]
+  },
+  "gific148_email": {
+    "status": "ready_retest",
+    "report": "eval/reports/GIFIC148_WASEEM_QA_REPORT.md",
+    "test_script": "eval/platform/gific148_waseem_qa.py",
+    "push_script": "eval/platform/waseem_qa_push_prompts.py"
+  }
+}
